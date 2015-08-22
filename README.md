@@ -7,7 +7,7 @@ If you want to use it, you need a working Go environment first.
 
 1. Change the two constants in `bgfetch.go`
 
-2. Install the script `go install`
+2. Install the script with `go install`
 
 3. Make sure it works by running `bgfetch` from the console. The `OutputDir` folder should contain the images now.
 
