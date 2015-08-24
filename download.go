@@ -14,6 +14,14 @@ type Download struct {
 }
 
 func (d *Download) Run() error {
+	outputFile := OutputDir + d.fileName
+	if _, err := os.Stat(outputFile); err == nil {
+		err := os.Remove(outputFile)
+		if err != nil {
+			return err
+		}
+	}
+
 	if !d.image.IsHorizontal() {
 		return errors.New("Image is not horizontal")
 	}
