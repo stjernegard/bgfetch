@@ -38,17 +38,19 @@ func main() {
 	downloads := []*Download{}
 
 	for i, image := range images {
-		go func(image Image, id int) {
-			fileExt, err := image.FileExtension()
-			download := Download{strconv.Itoa(id), &image, nil}
-			if err != nil {
-				download.err = err
-			} else {
-				download.fileName = download.fileName + "." + fileExt
-				download.err = download.Run()
-			}
-			ch <- &download
-		}(image, i)
+		if i < NumberOfImages {
+			go func(image Image, id int) {
+				fileExt, err := image.FileExtension()
+				download := Download{strconv.Itoa(id), &image, nil}
+				if err != nil {
+					download.err = err
+				} else {
+					download.fileName = download.fileName + "." + fileExt
+					download.err = download.Run()
+				}
+				ch <- &download
+			}(image, i)
+		}
 	}
 
 	for {
@@ -60,7 +62,7 @@ func main() {
 				fmt.Println("Finished", download.fileName)
 			}
 			downloads = append(downloads, download)
-			if len(downloads) == len(images) {
+			if len(downloads) == NumberOfImages {
 				return
 			}
 		}

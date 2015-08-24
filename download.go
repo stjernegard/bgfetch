@@ -22,10 +22,6 @@ func (d *Download) Run() error {
 		}
 	}
 
-	if !d.image.IsHorizontal() {
-		return errors.New("Image is not horizontal")
-	}
-
 	output, err := os.Create(OutputDir + d.fileName)
 	if err != nil {
 		return err

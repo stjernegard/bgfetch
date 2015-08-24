@@ -25,12 +25,15 @@ func (p *Page) CompressToImages() []Image {
 	for _, child := range p.Data.Children {
 		if len(child.Data.Preview.Images) > 0 {
 			image := child.Data.Preview.Images[0]
-			images = append(images, Image{
+			newImage := Image{
 				id:     image.Id,
 				url:    image.Source.Url,
 				width:  image.Source.Width,
 				height: image.Source.Height,
-			})
+			}
+			if newImage.IsHorizontal() {
+				images = append(images, newImage)
+			}
 		}
 	}
 	return images
