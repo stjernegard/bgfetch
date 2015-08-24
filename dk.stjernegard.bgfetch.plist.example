@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>dk.stjernegard.backgroundfetcher</string>
+    <string>dk.stjernegard.bgfetch</string>
     <key>KeepAlive</key>
     <false/>
     <key>RunAtLoad</key>
