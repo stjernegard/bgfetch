@@ -1,7 +1,6 @@
 # BGFetch
 
-This is the script I use to have my desktop background rotate through
-/r/EarthPorn's top 25 of the month.
+This is the script I use to have my desktop background rotate through images submitted to /r/EarthPorn.
 
 If you want to use it, you need a working Go environment first.
 
