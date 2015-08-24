@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	SourceUrl = "https://www.reddit.com/r/EarthPorn/top.json?sort=top&t=month"
-	OutputDir = "/Users/dannistjernegard/Pictures/EarthPorn/"
+	SourceUrl      = "https://www.reddit.com/r/EarthPorn.json"
+	OutputDir      = "/Users/dannistjernegard/Pictures/EarthPorn/"
+	NumberOfImages = 1
 )
 
 func getJson(url string, target interface{}) error {
@@ -31,7 +32,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	images := page.CompressToImages()
+	images := page.CompressToImages()[:NumberOfImages]
 
 	ch := make(chan *Download)
 	downloads := []*Download{}

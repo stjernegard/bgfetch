@@ -23,13 +23,15 @@ type Page struct {
 func (p *Page) CompressToImages() []Image {
 	images := []Image{}
 	for _, child := range p.Data.Children {
-		image := child.Data.Preview.Images[0]
-		images = append(images, Image{
-			id:     image.Id,
-			url:    image.Source.Url,
-			width:  image.Source.Width,
-			height: image.Source.Height,
-		})
+		if len(child.Data.Preview.Images) > 0 {
+			image := child.Data.Preview.Images[0]
+			images = append(images, Image{
+				id:     image.Id,
+				url:    image.Source.Url,
+				width:  image.Source.Width,
+				height: image.Source.Height,
+			})
+		}
 	}
 	return images
 }
