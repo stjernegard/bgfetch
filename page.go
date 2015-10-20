@@ -28,12 +28,10 @@ func (p *Page) CompressToImages() []Image {
 			newImage := Image{
 				id:     image.Id,
 				url:    image.Source.Url,
-				width:  image.Source.Width,
-				height: image.Source.Height,
+				Width:  image.Source.Width,
+				Height: image.Source.Height,
 			}
-			if newImage.IsHorizontal() {
-				images = append(images, newImage)
-			}
+			images = append(images, newImage)
 		}
 	}
 	return images

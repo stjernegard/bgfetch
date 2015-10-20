@@ -8,12 +8,12 @@ import (
 type Image struct {
 	id     string
 	url    string
-	width  int
-	height int
+	Width  int
+	Height int
 }
 
 func (i *Image) IsHorizontal() bool {
-	return i.width > i.height
+	return i.Width > i.Height
 }
 
 func (i *Image) FileExtension() (string, error) {

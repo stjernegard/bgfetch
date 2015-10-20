@@ -11,7 +11,9 @@ import (
 const (
 	SourceUrl      = "https://www.reddit.com/r/EarthPorn.json"
 	OutputDir      = "/Users/dannistjernegard/Pictures/EarthPorn/"
-	NumberOfImages = 1
+	NumberOfImages = 2
+	MinWidth       = 2550
+	MinHeight      = 0
 )
 
 func getJson(url string, target interface{}) error {
@@ -32,7 +34,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	images := page.CompressToImages()[:NumberOfImages]
+	images := []Image{}
+	for _, image := range page.CompressToImages() {
+		if image.IsHorizontal() &&
+			image.Width > MinWidth &&
+			image.Height > MinHeight {
+			images = append(images, image)
+		}
+	}
+	images = images[:NumberOfImages]
 
 	ch := make(chan *Download)
 	downloads := []*Download{}
