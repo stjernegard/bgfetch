@@ -11,7 +11,7 @@
     <key>UserName</key>
     <string>dannistjernegard</string>
     <key>Program</key>
-    <string>/Users/dannistjernegard/go/bin/bgfetch</string>
+    <string>/Users/dannistjernegard/.bin/BGFetch</string>
     <key>ProgramArguments</key>
     <array>
     </array>
