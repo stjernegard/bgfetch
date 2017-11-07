@@ -1,47 +1,43 @@
 import Foundation
 
-do {
-    let manager = FileManager.default
-    let directoryContents = try manager
-        .contentsOfDirectory(at: Settings.OutputDir,
-                             includingPropertiesForKeys: nil)
-    for file in directoryContents {
-        do {
-            try manager.removeItem(at: file)
-        } catch let e {
-            print(e.localizedDescription)
-        }
-    }
-} catch let error {
-    print(error.localizedDescription)
-}
-
 let semaphore = DispatchSemaphore(value: 0)
 print("Fetching images")
 Requester.makeJSONRequest { data in
+    guard let data = data else {
+        semaphore.signal()
+        return
+    }
+
     guard let listing = Listing(data: data) else { return }
     let urls = listing.images
         .prefix(Settings.NumberOfImages)
         .map { $0.url }
 
-    var locations: [URL] = []
+    var finishedDownloads: Int = 0
 
-    for url in urls {
+    for (index, url) in urls.enumerated() {
         Requester.download(file: url) { (location) in
-            print(url.lastPathComponent)
-            locations.append(url)
-
-            do {
-                try FileManager.default.moveItem(
-                    at: location,
-                    to: Settings.OutputDir
-                      .appendingPathComponent(url.lastPathComponent))
-            } catch let e {
-                print(e.localizedDescription)
+            defer {
+                finishedDownloads += 1
+                if finishedDownloads == urls.count {
+                    semaphore.signal()
+                }
             }
 
-            if locations.count == urls.count {
-                semaphore.signal()
+            guard let location = location else { return }
+
+            do {
+                let newFileURL = Settings.OutputDir
+                    .appendingPathComponent("\(index).\(url.pathExtension)")
+
+                print("Saving \(url.lastPathComponent) to \(newFileURL.lastPathComponent)")
+
+                try? FileManager.default.removeItem(at: newFileURL)
+
+                try FileManager.default.moveItem(at: location,
+                                                 to: newFileURL)
+            } catch let e {
+                print(e.localizedDescription)
             }
         }
     }
